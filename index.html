@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LOVE YOUU - FINAL BOSS</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,sans-serif}
+body{
+overflow:hidden;
+background:black;
+color:white;
+}
+
+/* Flash */
+.flash{
+position:fixed;
+width:100%;
+height:100%;
+background:white;
+opacity:0;
+pointer-events:none;
+z-index:999;
+transition:0.3s;
+}
+
+/* Trang */
+.page{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+background:radial-gradient(circle at center,#0f0f1f,#000);
+transition:1s;
+text-align:center;
+padding:20px;
+}
+
+/* LOVE YOUU */
+.love{
+font-size:90px;
+opacity:0;
+transform:scale(.5);
+animation:appear 2s forwards;
+text-shadow:0 0 20px #ff00cc,0 0 40px #ff1493,0 0 80px #ff69b4;
+margin-bottom:30px;
+}
+
+@keyframes appear{
+0%{opacity:0;transform:scale(.3)}
+50%{opacity:1;transform:scale(1.4)}
+100%{opacity:1;transform:scale(1)}
+}
+
+/* Lời chúc */
+.message{
+font-size:22px;
+max-width:600px;
+line-height:1.6;
+opacity:0;
+margin-top:10px;
+animation:fadeIn 2s forwards;
+animation-delay:2s;
+}
+
+@keyframes fadeIn{
+to{opacity:1}
+}
+
+/* Rung nhẹ */
+@keyframes shake{
+0%{transform:translateX(0)}
+25%{transform:translateX(-2px)}
+50%{transform:translateX(2px)}
+75%{transform:translateX(-2px)}
+100%{transform:translateX(0)}
+}
+
+/* Sao nền */
+.star{
+position:fixed;
+width:2px;height:2px;
+background:white;
+animation:twinkle 2s infinite alternate;
+}
+@keyframes twinkle{
+0%{opacity:.2}
+100%{opacity:1}
+}
+
+/* Tim bay */
+.heart{
+position:fixed;
+bottom:-20px;
+animation:float 6s linear forwards;
+}
+@keyframes float{
+0%{transform:translateY(0)}
+100%{transform:translateY(-110vh)}
+}
+
+/* Pháo hoa tim */
+.boom{
+position:fixed;
+font-size:20px;
+animation:explode 1.2s forwards;
+}
+@keyframes explode{
+0%{transform:scale(0);opacity:1}
+100%{transform:scale(4);opacity:0}
+}
+</style>
+</head>
+<body>
+
+<div class="flash" id="flash"></div>
+
+<div class="page" id="main">
+<h1>🔐 Nhập Mã Bí Mật</h1>
+<input type="password" id="pin">
+<br><br>
+<button onclick="check()">Mở khóa</button>
+</div>
+
+<div class="page" id="secret" style="display:none;">
+<h1 class="love" id="loveText">LOVE YOUU 💖</h1>
+
+<div class="message">
+CHÚC NHI 14-2 LUÔN VUI VẺ, MẠNH KHỎE 💕<br>
+NHỚ HONG ĐƯỢC BỎ BỮA VỚI THỨC KHUYA NỮA NHAAA!! 😤💗<br><br>
+Luôn cười thật nhiều, luôn hạnh phúc và<br>
+luôn có người thương ở bên nhaaaa 💖✨
+</div>
+
+</div>
+
+<audio id="music" loop>
+<source src="Download.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="whoosh">
+<source src="https://assets.mixkit.co/sfx/preview/mixkit-fast-woosh-transition-1486.mp3">
+</audio>
+
+<script>
+const correct="22032012";
+
+function check(){
+let val=document.getElementById("pin").value;
+if(val===correct){
+
+let flash=document.getElementById("flash");
+flash.style.opacity="1";
+setTimeout(()=>flash.style.opacity="0",300);
+
+document.getElementById("whoosh").play();
+
+setTimeout(()=>{
+document.getElementById("main").style.display="none";
+document.getElementById("secret").style.display="flex";
+
+let music=document.getElementById("music");
+music.currentTime=0;
+music.play().catch(()=>{});
+
+startStars();
+startHearts();
+fireworks();
+shakeText();
+},400);
+
+}else{
+alert("Sai rồi 😢");
+}
+}
+
+/* Sao */
+function startStars(){
+for(let i=0;i<150;i++){
+let s=document.createElement("div");
+s.className="star";
+s.style.top=Math.random()*100+"vh";
+s.style.left=Math.random()*100+"vw";
+document.body.appendChild(s);
+}
+}
+
+/* Tim bay */
+function startHearts(){
+setInterval(()=>{
+let h=document.createElement("div");
+h.className="heart";
+h.innerHTML="💖";
+h.style.left=Math.random()*100+"vw";
+h.style.fontSize=(15+Math.random()*25)+"px";
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),6000);
+},300);
+}
+
+/* Pháo hoa */
+function fireworks(){
+setInterval(()=>{
+for(let i=0;i<10;i++){
+let b=document.createElement("div");
+b.className="boom";
+b.innerHTML="💗";
+b.style.left=Math.random()*100+"vw";
+b.style.top=Math.random()*100+"vh";
+document.body.appendChild(b);
+setTimeout(()=>b.remove(),1200);
+}
+},2000);
+}
+
+/* Rung chữ */
+function shakeText(){
+let text=document.getElementById("loveText");
+setInterval(()=>{
+text.style.animation="shake 0.3s";
+setTimeout(()=>text.style.animation="",300);
+},3000);
+}
+</script>
+
+</body>
+</html>
